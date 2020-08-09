@@ -1,7 +1,10 @@
 name: 'Prepare local Actions'
+author: Johannes Spangenberg
 description: >-
   Prepare local actions by installing dependencies and building the actions.
-author: Johannes Spangenberg
+branding:
+  icon: 'settings'
+  color: 'blue'
 inputs:
   actions_dir:
     default: './.github/actions'
