@@ -1,0 +1,18 @@
+# IntelliJ
+/.idea/*
+!/.idea/codeStyles
+!/.idea/inspectionProfiles
+/out/
+
+# npm
+/node_modules/
+
+# Vim
+.*.sw[nop]
+
+# VS Code
+.vscode/
+
+# Operating Systems
+.DS_Store
+Thumbs.db

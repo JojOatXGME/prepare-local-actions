@@ -1,0 +1,23 @@
+{
+  "name": "prepare-local-actions",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Prepare local actions by installing dependencies and building the actions.",
+  "author": "Johannes Spangenberg",
+  "license": "MIT",
+  "homepage": "https://github.com/JojOatXGME/prepare-local-actions#readme",
+  "scripts": {
+    "build": "ncc build src/index.ts -o dist"
+  },
+  "dependencies": {
+    "@actions/cache": "^1.0.2",
+    "@actions/core": "^1.2.4",
+    "@actions/exec": "^1.0.4",
+    "@actions/io": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.54",
+    "@zeit/ncc": "^0.22.3",
+    "typescript": "^3.9.7"
+  }
+}

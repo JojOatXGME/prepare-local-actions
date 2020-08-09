@@ -1,0 +1,14 @@
+name: 'Prepare local Actions'
+description: >-
+  Prepare local actions by installing dependencies and building the actions.
+author: Johannes Spangenberg
+inputs:
+  actions_dir:
+    default: './.github/actions'
+    description: >-
+      The expected stage of the release. Might be current,
+      release-candidate, release-nightly or nightly.
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
