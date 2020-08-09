@@ -9,8 +9,7 @@ inputs:
   actions_dir:
     default: './.github/actions'
     description: >-
-      The expected stage of the release. Might be current,
-      release-candidate, release-nightly or nightly.
+      The directory where your Actions are located.
     required: true
 runs:
   using: 'node12'
