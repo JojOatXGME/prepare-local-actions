@@ -1,7 +1,5 @@
 # IntelliJ
-/.idea/*
-!/.idea/codeStyles
-!/.idea/inspectionProfiles
+/.idea/
 /out/
 
 # npm

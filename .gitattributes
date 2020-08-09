@@ -1,5 +1,8 @@
 # Use CRLF for LICENSE file to make it easy to read in all editors
 /LICENSE        eol=crlf
 
+# Do not show diff for distribution and tread it as blob
+/dist/index.js  -diff -text
+
 # Do not show diff for locked dependencies
 /package-lock.json -diff

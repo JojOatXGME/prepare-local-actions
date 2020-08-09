@@ -9429,8 +9429,8 @@ const path_1 = __webpack_require__(622);
 const exec_1 = __webpack_require__(986);
 var readdir = fs_1.promises.readdir;
 async function main() {
-    const actionsDir = core_1.getInput("actions_dir");
-    if (!await io_util_1.isDirectory(actionsDir)) {
+    const actionsDir = core_1.getInput('actions_dir');
+    if (!(await io_util_1.isDirectory(actionsDir))) {
         throw new Error(`Directory ${actionsDir} does not exit`);
     }
     const [cacheHit, cacheKey] = await core_1.group('Search for cached results', async () => {
@@ -9493,7 +9493,7 @@ async function* listDirectoryRecursively(dir) {
     const entries = await readdir(dir, { withFileTypes: true });
     // We sort the entries to ensure a consistent order. A consistent order is
     //  important for hashFiles(), since it must create consistent hashes.
-    entries.sort((a, b) => a.name < b.name ? -1 : 1);
+    entries.sort((a, b) => (a.name < b.name ? -1 : 1));
     for (const entry of entries) {
         const fullName = path_1.resolve(dir, entry.name);
         if (entry.isDirectory()) {

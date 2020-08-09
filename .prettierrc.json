@@ -1,0 +1,7 @@
+{
+  "singleQuote": true,
+  "quoteProps": "consistent",
+  "bracketSpacing": false,
+  "arrowParens": "avoid",
+  "parser": "typescript"
+}
