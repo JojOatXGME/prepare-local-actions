@@ -1,0 +1,58 @@
+name: Integration Check
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  build:
+
+    name: "Build and test project"
+    runs-on: ubuntu-latest
+
+    steps:
+    # Setup environment
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    # Setup caches
+    - name: Cache for npm
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: "npm-\
+          ${{runner.os}}-\
+          ${{hashFiles('package-lock.json')}}"
+    # Build
+    - name: Install dependencies
+      run: npm ci
+    - name: Build project
+      run: npm run build
+    - name: Check formatting
+      run: npm run format-check
+    - name: Run tests
+      run: npm test
+    # Verify that the build result matches what the user has checked in
+    - name: Verify no unstaged changes
+      shell: bash
+      run: |
+        if [[ "$(git status --porcelain)" != "" ]]; then
+          echo "::error::Unstaged changes detected. Try running: npm ci && npm run build"
+          echo ----------------------------------------
+          echo git status
+          echo ----------------------------------------
+          git status
+          echo ----------------------------------------
+          echo git diff
+          echo ----------------------------------------
+          git diff
+          echo ----------------------------------------
+          exit 1
+        fi

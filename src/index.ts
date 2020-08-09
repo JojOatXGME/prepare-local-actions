@@ -1,34 +1,35 @@
-import {getInput, group, info, setFailed, warning} from "@actions/core";
-import {isDirectory} from "@actions/io/lib/io-util";
-import {ReserveCacheError, restoreCache, saveCache} from "@actions/cache";
-import {createHash} from "crypto";
-import {createReadStream, Dirent, promises} from "fs";
-import {resolve} from "path";
-import {exec} from "@actions/exec";
+import {getInput, group, info, setFailed, warning} from '@actions/core';
+import {isDirectory} from '@actions/io/lib/io-util';
+import {ReserveCacheError, restoreCache, saveCache} from '@actions/cache';
+import {createHash} from 'crypto';
+import {createReadStream, Dirent, promises} from 'fs';
+import {resolve} from 'path';
+import {exec} from '@actions/exec';
 import readdir = promises.readdir;
 
 async function main() {
-  const actionsDir = getInput("actions_dir");
-  if (!await isDirectory(actionsDir)) {
+  const actionsDir = getInput('actions_dir');
+  if (!(await isDirectory(actionsDir))) {
     throw new Error(`Directory ${actionsDir} does not exit`);
   }
 
-  const [cacheHit, cacheKey] =
-      await group('Search for cached results', async () => {
-        const filesHash = await hashFiles(actionsDir);
-        const cacheKey = `local-actions-preparation-${filesHash}`;
-        info(`Cache key is: ${cacheKey}`);
+  const [cacheHit, cacheKey] = await group(
+    'Search for cached results',
+    async () => {
+      const filesHash = await hashFiles(actionsDir);
+      const cacheKey = `local-actions-preparation-${filesHash}`;
+      info(`Cache key is: ${cacheKey}`);
 
-        const key = await restoreCache([actionsDir], cacheKey);
-        if (key == null) {
-          info(`Cache not found for key: ${cacheKey}`);
-          return [false, cacheKey];
-        }
-        else {
-          info(`Cache restored from key: ${key}`);
-          return [true, cacheKey];
-        }
-      });
+      const key = await restoreCache([actionsDir], cacheKey);
+      if (key == null) {
+        info(`Cache not found for key: ${cacheKey}`);
+        return [false, cacheKey];
+      } else {
+        info(`Cache restored from key: ${key}`);
+        return [true, cacheKey];
+      }
+    }
+  );
 
   if (cacheHit) {
     return;
@@ -45,12 +46,10 @@ async function main() {
   await group('Cache result for the future', async () => {
     try {
       await saveCache([actionsDir], cacheKey);
-    }
-    catch (error) {
+    } catch (error) {
       if (error.name === ReserveCacheError.name) {
-        info(error.message)
-      }
-      else {
+        info(error.message);
+      } else {
         warning(error);
       }
     }
@@ -82,14 +81,13 @@ async function* listDirectoryRecursively(dir: string): AsyncGenerator<string> {
 
   // We sort the entries to ensure a consistent order. A consistent order is
   //  important for hashFiles(), since it must create consistent hashes.
-  entries.sort((a, b) => a.name < b.name ? -1 : 1);
+  entries.sort((a, b) => (a.name < b.name ? -1 : 1));
 
   for (const entry of entries) {
     const fullName = resolve(dir, entry.name);
     if (entry.isDirectory()) {
       yield* listDirectoryRecursively(fullName);
-    }
-    else {
+    } else {
       yield fullName;
     }
   }
