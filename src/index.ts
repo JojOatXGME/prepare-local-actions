@@ -31,9 +31,9 @@ async function main() {
     }
   );
 
-  if (cacheHit) {
-    return;
-  }
+  // if (cacheHit) {
+  //   return;
+  // }
 
   await group('Install dependencies', async () => {
     await exec('npm', ['ci'], {cwd: actionsDir});
@@ -47,6 +47,8 @@ async function main() {
     try {
       await saveCache([actionsDir], cacheKey);
     } catch (error) {
+      info(error.name);
+      info(ReserveCacheError.name);
       if (error.name === ReserveCacheError.name) {
         info(error.message);
       } else {

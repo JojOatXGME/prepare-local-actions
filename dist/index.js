@@ -9447,9 +9447,9 @@ async function main() {
             return [true, cacheKey];
         }
     });
-    if (cacheHit) {
-        return;
-    }
+    // if (cacheHit) {
+    //   return;
+    // }
     await core_1.group('Install dependencies', async () => {
         await exec_1.exec('npm', ['ci'], { cwd: actionsDir });
     });
@@ -9461,6 +9461,8 @@ async function main() {
             await cache_1.saveCache([actionsDir], cacheKey);
         }
         catch (error) {
+            core_1.info(error.name);
+            core_1.info(cache_1.ReserveCacheError.name);
             if (error.name === cache_1.ReserveCacheError.name) {
                 core_1.info(error.message);
             }
